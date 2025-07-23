@@ -4,2876 +4,523 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS Manual Amount Entry - Odoo 18 Module | Spopli Web Development</title>
-    <meta name="description" content="Professional Odoo 18 POS module for manual amount entry with auto-calculation. Perfect for retail businesses. Available on-premise and Odoo SH.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f8fafc;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #714b67 0%, #8b5a8c 100%);
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo img {
-            height: 50px;
-            width: auto;
-            background: white;
-            padding: 5px;
-            border-radius: 8px;
-        }
-
-        .company-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .company-name {
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-        .partner-badge {
-            background: rgba(255,255,255,0.2);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            width: fit-content;
-        }
-
-        .contact-info {
-            display: flex;
-            gap: 20px;
-            font-size: 0.9rem;
-        }
-
-        .contact-info a {
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: opacity 0.3s ease;
-        }
-
-        .contact-info a:hover {
-            opacity: 0.8;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #714b67 0%, #8b5a8c 100%);
-            color: white;
-            padding: 4rem 0;
-            text-align: center;
-        }
-
-        .hero-logos {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            margin-bottom: 2rem;
-        }
-
-        .app-icon {
-            width: 120px;
-            height: 120px;
-            background: white;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .app-icon img {
-            width: 100%;
-            height: auto;
-        }
-
-        .odoo-logo {
-            width: 120px;
-            height: 120px;
-            background: white;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            padding: 20px;
-        }
-
-        .odoo-logo img {
-            width: 100%;
-            height: auto;
-        }
-
-        .plus-icon {
-            font-size: 2rem;
-            opacity: 0.7;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 2rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .version-badge {
-            background: rgba(255,255,255,0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-            display: inline-block;
-        }
-
-        /* Tabs */
-        .tabs-container {
-            background: white;
-            padding: 0;
-            margin-top: -1px;
-        }
-
-        .tabs {
-            display: flex;
-            border-bottom: 2px solid #e2e8f0;
-            overflow-x: auto;
-        }
-
-        .tab {
-            padding: 1rem 2rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #64748b;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .tab.active {
-            color: #714b67;
-            border-bottom-color: #714b67;
-            background: rgba(113, 75, 103, 0.05);
-        }
-
-        .tab:hover {
-            color: #714b67;
-            background: rgba(113, 75, 103, 0.05);
-        }
-
-        .tab-content {
-            display: none;
-            padding: 3rem 0;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Features Section */
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #2d3748;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.1rem;
-            color: #718096;
-            margin-bottom: 3rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            text-align: left;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-left: 4px solid #714b67;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-
-        .feature-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #714b67, #8b5a8c);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .feature-card h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #2d3748;
-            margin: 0;
-        }
-
-        .feature-card p {
-            color: #4a5568;
-            line-height: 1.6;
-        }
-
-        .feature-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 1rem;
-        }
-
-        .feature-list li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 0.5rem;
-            color: #4a5568;
-        }
-
-        .feature-list li i {
-            color: #48bb78;
-            font-size: 0.9rem;
-        }
-
-        /* Screenshots Section */
-        .screenshot-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .screenshot-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-
-        .screenshot-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .screenshot-image {
-            height: 250px;
-            background: linear-gradient(135deg, #f7fafc, #edf2f7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .screenshot-mockup {
-            width: 90%;
-            height: 90%;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-        }
-
-        .mockup-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .mockup-dots {
-            display: flex;
-            gap: 5px;
-        }
-
-        .mockup-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #cbd5e0;
-        }
-
-        .mockup-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .mockup-button {
-            background: #714b67;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .mockup-input {
-            background: #f7fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 8px 12px;
-            font-size: 0.8rem;
-        }
-
-        .mockup-text {
-            background: #f7fafc;
-            height: 6px;
-            border-radius: 3px;
-            margin: 3px 0;
-        }
-
-        .screenshot-info {
-            padding: 1.5rem;
-        }
-
-        .screenshot-info h4 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #2d3748;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            max-width: 90%;
-            max-height: 90%;
-            overflow-y: auto;
-            position: relative;
-            animation: slideIn 0.3s ease;
-        }
-
-        .modal-header {
-            padding: 2rem;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-body {
-            padding: 2rem;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #64748b;
-            transition: color 0.3s ease;
-        }
-
-        .close-modal:hover {
-            color: #f56565;
-        }
-
-        .detailed-screenshot {
-            width: 100%;
-            max-width: 800px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-
-        .screenshot-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .detail-item {
-            background: #f7fafc;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-left: 4px solid #714b67;
-        }
-
-        .detail-item h5 {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #2d3748;
-        }
-
-        /* Technical Specs */
-        .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .spec-item {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            border-left: 4px solid #714b67;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .spec-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .spec-item h4 {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #2d3748;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .spec-item p {
-            color: #718096;
-        }
-
-        .spec-details {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid #e2e8f0;
-            display: none;
-        }
-
-        .spec-details.active {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-
-        .spec-details ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .spec-details li {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 0.5rem;
-            color: #4a5568;
-            font-size: 0.9rem;
-        }
-
-        .spec-details li i {
-            color: #48bb78;
-            font-size: 0.8rem;
-        }
-
-        /* Availability Section */
-        .availability-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .availability-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .availability-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .availability-card.available {
-            border-top: 4px solid #48bb78;
-        }
-
-        .availability-card.unavailable {
-            border-top: 4px solid #f56565;
-            opacity: 0.7;
-        }
-
-        .availability-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .availability-card.available .availability-icon {
-            background: #48bb78;
-        }
-
-        .availability-card.unavailable .availability-icon {
-            background: #f56565;
-        }
-
-        /* Company Info */
-        .company-info-section {
-            padding: 4rem 0;
-            background: #2d3748;
-            color: white;
-        }
-
-        .company-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-            margin-top: 2rem;
-        }
-
-        .company-card {
-            background: rgba(255,255,255,0.05);
-            padding: 2rem;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-        }
-
-        .company-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 1rem;
-            color: #cbd5e0;
-        }
-
-        .contact-item i {
-            width: 20px;
-            text-align: center;
-            color: #714b67;
-        }
-
-        /* Footer */
-        footer {
-            background: #1a202c;
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .footer-links a {
-            color: #cbd5e0;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: white;
-        }
-
-        /* Reviews & Rating Styles */
-        .rating-summary {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 3rem;
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            margin-bottom: 3rem;
-        }
-
-        .overall-rating {
-            text-align: center;
-        }
-
-        .rating-score {
-            font-size: 4rem;
-            font-weight: 700;
-            color: #714b67;
-            margin-bottom: 0.5rem;
-        }
-
-        .rating-stars {
-            font-size: 1.5rem;
-            color: #fbbf24;
-            margin-bottom: 0.5rem;
-        }
-
-        .rating-count {
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        .rating-breakdown {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .rating-bar {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .rating-bar span:first-child {
-            width: 60px;
-            color: #64748b;
-        }
-
-        .rating-bar span:last-child {
-            width: 30px;
-            color: #64748b;
-            text-align: right;
-        }
-
-        .bar {
-            flex: 1;
-            height: 8px;
-            background: #e2e8f0;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .fill {
-            height: 100%;
-            background: #fbbf24;
-            transition: width 0.3s ease;
-        }
-
-        .add-review-section {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            margin-bottom: 3rem;
-        }
-
-        .add-review-section h3 {
-            margin-bottom: 1.5rem;
-            color: #2d3748;
-        }
-
-        .review-form {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-group label {
-            font-weight: 500;
-            color: #4a5568;
-        }
-
-        .form-input, .form-textarea {
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-input:focus, .form-textarea:focus {
-            outline: none;
-            border-color: #714b67;
-            box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.1);
-        }
-
-        .form-textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .star-rating {
-            display: flex;
-            gap: 0.25rem;
-            font-size: 1.5rem;
-        }
-
-        .star-rating i {
-            cursor: pointer;
-            transition: color 0.2s ease;
-            color: #e2e8f0;
-        }
-
-        .star-rating i:hover,
-        .star-rating i.active {
-            color: #fbbf24;
-        }
-
-        .submit-review-btn, .submit-discussion-btn {
-            background: linear-gradient(135deg, #714b67, #8b5a8c);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            justify-self: start;
-        }
-
-        .submit-review-btn:hover, .submit-discussion-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(113, 75, 103, 0.3);
-        }
-
-        .reviews-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .review-item {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .review-item:hover {
-            transform: translateY(-2px);
-        }
-
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-
-        .reviewer-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .reviewer-avatar {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #714b67, #8b5a8c);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-        }
-
-        .reviewer-details h4 {
-            margin: 0;
-            color: #2d3748;
-            font-size: 1.1rem;
-        }
-
-        .reviewer-details p {
-            margin: 0;
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        .review-meta {
-            text-align: right;
-        }
-
-        .review-stars {
-            color: #fbbf24;
-            margin-bottom: 0.25rem;
-        }
-
-        .review-date {
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        .review-content {
-            margin-bottom: 1rem;
-            line-height: 1.6;
-            color: #4a5568;
-        }
-
-        .review-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .helpful-btn {
-            background: none;
-            border: 1px solid #e2e8f0;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .helpful-btn:hover {
-            border-color: #714b67;
-            color: #714b67;
-            background: rgba(113, 75, 103, 0.05);
-        }
-
-        .helpful-btn.active {
-            background: #714b67;
-            color: white;
-            border-color: #714b67;
-        }
-
-        /* Enhanced Pagination Styles */
-        .pagination-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            margin-top: 2rem;
-            padding: 2rem 0;
-        }
-
-        .pagination-buttons {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .pagination-btn {
-            padding: 0.75rem 1rem;
-            border: 1px solid #e2e8f0;
-            background: white;
-            color: #64748b;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            min-width: 44px;
-            justify-content: center;
-        }
-
-        .pagination-btn:hover:not(:disabled) {
-            border-color: #714b67;
-            color: #714b67;
-            background: rgba(113, 75, 103, 0.05);
-            transform: translateY(-1px);
-        }
-
-        .pagination-btn.active {
-            background: linear-gradient(135deg, #714b67, #8b5a8c);
-            color: white;
-            border-color: #714b67;
-            box-shadow: 0 2px 8px rgba(113, 75, 103, 0.3);
-        }
-
-        .pagination-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background: #f8fafc;
-        }
-
-        .pagination-info {
-            color: #64748b;
-            font-size: 0.9rem;
-            text-align: center;
-            background: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .pagination-ellipsis {
-            color: #64748b;
-            padding: 0.75rem 0.5rem;
-            font-weight: 500;
-        }
-
-        /* Discussion Styles */
-        .discussion-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-item {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border-top: 4px solid #714b67;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #714b67;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        .new-discussion-section {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            margin-bottom: 3rem;
-        }
-
-        .new-discussion-section h3 {
-            margin-bottom: 1.5rem;
-            color: #2d3748;
-        }
-
-        .discussion-form {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .discussion-threads {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .discussion-item {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            border-left: 4px solid #e2e8f0;
-        }
-
-        .discussion-item:hover {
-            transform: translateY(-2px);
-        }
-
-        .discussion-item.active {
-            border-left-color: #714b67;
-        }
-
-        .discussion-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-
-        .discussion-title h4 {
-            margin: 0 0 0.5rem 0;
-            color: #2d3748;
-            font-size: 1.1rem;
-        }
-
-        .discussion-tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-
-        .tag.usage { background: #dbeafe; color: #1e40af; }
-        .tag.installation { background: #fef3c7; color: #92400e; }
-        .tag.bug { background: #fee2e2; color: #dc2626; }
-        .tag.feature { background: #d1fae5; color: #065f46; }
-        .tag.general { background: #f3e8ff; color: #7c3aed; }
-        .tag.resolved { background: #d1fae5; color: #065f46; }
-        .tag.open { background: #fef3c7; color: #92400e; }
-        .tag.under-review { background: #dbeafe; color: #1e40af; }
-
-        .discussion-meta {
-            text-align: right;
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-
-        .discussion-meta span {
-            display: block;
-            margin-bottom: 0.25rem;
-        }
-
-        .discussion-preview {
-            margin-bottom: 1rem;
-            color: #4a5568;
-            line-height: 1.6;
-        }
-
-        .discussion-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .reply-btn, .like-btn {
-            background: none;
-            border: 1px solid #e2e8f0;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .reply-btn:hover, .like-btn:hover {
-            border-color: #714b67;
-            color: #714b67;
-            background: rgba(113, 75, 103, 0.05);
-        }
-
-        .like-btn.active {
-            background: #714b67;
-            color: white;
-            border-color: #714b67;
-        }
-
-        .discussion-replies {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .reply-item {
-            margin-bottom: 1.5rem;
-            padding: 1rem;
-            background: #f8fafc;
-            border-radius: 8px;
-        }
-
-        .reply-author {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .author-avatar {
-            width: 35px;
-            height: 35px;
-            background: linear-gradient(135deg, #714b67, #8b5a8c);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        .author-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .support-badge {
-            background: #714b67;
-            color: white;
-            padding: 0.125rem 0.5rem;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            width: fit-content;
-        }
-
-        .reply-time {
-            font-size: 0.8rem;
-            color: #64748b;
-        }
-
-        .reply-content {
-            color: #4a5568;
-            line-height: 1.6;
-        }
-
-        .add-reply {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-end;
-            margin-top: 1rem;
-        }
-
-        .reply-textarea {
-            flex: 1;
-            min-height: 60px;
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            resize: vertical;
-        }
-
-        .reply-submit-btn {
-            background: #714b67;
-            color: white;
-            border: none;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .reply-submit-btn:hover {
-            background: #8b5a8c;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from { 
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                max-height: 0;
-            }
-            to {
-                opacity: 1;
-                max-height: 200px;
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .feature-card,
-        .screenshot-card,
-        .availability-card {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        .feature-card:nth-child(2) { animation-delay: 0.1s; }
-        .feature-card:nth-child(3) { animation-delay: 0.2s; }
-        .feature-card:nth-child(4) { animation-delay: 0.3s; }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .contact-info {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .tabs {
-                justify-content: flex-start;
-            }
-
-            .tab {
-                padding: 1rem 1.5rem;
-                font-size: 0.9rem;
-            }
-
-            .hero-logos {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .app-icon, .odoo-logo {
-                width: 100px;
-                height: 100px;
-            }
-
-            .modal-content {
-                max-width: 95%;
-                margin: 1rem;
-            }
-
-            .modal-header, .modal-body {
-                padding: 1rem;
-            }
-
-            .rating-summary {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .discussion-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .review-header, .discussion-header {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .review-meta, .discussion-meta {
-                text-align: left;
-            }
-
-            .add-reply {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .pagination-buttons {
-                gap: 0.25rem;
-            }
-
-            .pagination-btn {
-                padding: 0.5rem 0.75rem;
-                font-size: 0.8rem;
-                min-width: 36px;
-            }
-
-            .pagination-info {
-                padding: 0.75rem 1rem;
-                font-size: 0.8rem;
-            }
-        }
-
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
 </head>
-<body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <img src="https://spopli.com/wp-content/uploads/2020/09/logo.png" alt="Spopli Logo">
-                    <div class="company-info">
-                        <div class="company-name">Spopli Web Development</div>
-                        <div class="partner-badge">
-                            <i class="fab fa-odoo"></i> Official Odoo Partner
-                        </div>
+<body style="font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:#333;background-color:#f8fafc;margin:0;padding:0;box-sizing:border-box">
+
+<!-- Header -->
+<header style="background:linear-gradient(135deg,#714b67 0%,#8b5a8c 100%);color:white;padding:1rem 0;box-shadow:0 2px 10px rgba(0,0,0,0.1)">
+    <div style="max-width:1200px;margin:0 auto;padding:0 20px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="display:flex;align-items:center;gap:15px">
+                <img src="https://spopli.com/wp-content/uploads/2020/09/logo.png" alt="Spopli Logo" style="height:50px;width:auto;background:white;padding:5px;border-radius:8px">
+                <div style="display:flex;flex-direction:column;gap:2px">
+                    <div style="font-size:1.3rem;font-weight:600">Spopli Web Development</div>
+                    <div style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:12px;font-size:0.8rem;display:inline-flex;align-items:center;gap:5px;width:fit-content">
+                        <i class="fab fa-odoo"></i> Official Odoo Partner
                     </div>
                 </div>
-                <div class="contact-info">
-                    <a href="tel:+912562275457">
-                        <i class="fas fa-phone"></i> +91 2562 275457
-                    </a>
-                    <a href="mailto:chintu2411@gmail.com">
-                        <i class="fas fa-envelope"></i> chintu2411@gmail.com
-                    </a>
+            </div>
+            <div style="display:flex;gap:20px;font-size:0.9rem">
+                <a href="tel:+912562275457" style="color:white;text-decoration:none;display:flex;align-items:center;gap:5px;transition:opacity 0.3s ease">
+                    <i class="fas fa-phone"></i> +91 2562 275457
+                </a>
+                <a href="mailto:chintu2411@gmail.com" style="color:white;text-decoration:none;display:flex;align-items:center;gap:5px;transition:opacity 0.3s ease">
+                    <i class="fas fa-envelope"></i> chintu2411@gmail.com
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section style="background:linear-gradient(135deg,#714b67 0%,#8b5a8c 100%);color:white;padding:4rem 0;text-align:center">
+    <div style="max-width:1200px;margin:0 auto;padding:0 20px">
+        <div style="display:flex;justify-content:center;align-items:center;gap:30px;margin-bottom:2rem">
+            <div style="width:120px;height:120px;background:white;border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,0.2)">
+                <img src="https://i.postimg.cc/8P6stwtw/icon.png" style="width:100%;height:auto">
+            </div>
+            <div style="font-size:2rem;opacity:0.7">+</div>
+            <div style="width:120px;height:120px;background:white;border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,0.2);padding:20px">
+                <img src="https://www.odoo.com/web/image/website/1/social_default_image?unique=6f0a220" alt="Odoo Logo" style="width:100%;height:auto">
+            </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.2);padding:0.5rem 1rem;border-radius:25px;font-size:0.9rem;margin-bottom:2rem;display:inline-block">
+            <i class="fab fa-odoo"></i> Odoo 18 POS Module
+        </div>
+        <h1 style="font-size:3rem;font-weight:700;margin-bottom:1rem">POS Manual Amount Entry</h1>
+        <p style="font-size:1.2rem;opacity:0.9;margin-bottom:2rem;max-width:700px;margin-left:auto;margin-right:auto">
+            Revolutionary Point of Sale module that allows cashiers to enter amounts in any currency and automatically calculate product quantities. Perfect for retail businesses dealing with weight-based products, bulk items, and flexible pricing scenarios.
+        </p>
+    </div>
+</section>
+
+<!-- Tabs Container -->
+<div style="background:white;padding:0;margin-top:-1px">
+    <div style="max-width:1200px;margin:0 auto;padding:0 20px">
+        <div style="display:flex;justify-content:center;border-bottom:2px solid #e2e8f0;overflow-x:auto">
+            <button class="tab active" onclick="showTab('features', this)" style="padding:1rem 2rem;background:none;border:none;cursor:pointer;font-size:1rem;font-weight:500;color:#714b67;border-bottom:3px solid #714b67;transition:all 0.3s ease;white-space:nowrap;background:rgba(113,75,103,0.05)">
+                <i class="fas fa-star"></i> Features
+            </button>
+            <button class="tab" onclick="showTab('screenshots', this)" style="padding:1rem 2rem;background:none;border:none;cursor:pointer;font-size:1rem;font-weight:500;color:#64748b;border-bottom:3px solid transparent;transition:all 0.3s ease;white-space:nowrap">
+                <i class="fas fa-images"></i> Screenshots
+            </button>
+            <button class="tab" onclick="showTab('technical', this)" style="padding:1rem 2rem;background:none;border:none;cursor:pointer;font-size:1rem;font-weight:500;color:#64748b;border-bottom:3px solid transparent;transition:all 0.3s ease;white-space:nowrap">
+                <i class="fas fa-cogs"></i> Technical Specs
+            </button>
+            <button class="tab" onclick="showTab('availability', this)" style="padding:1rem 2rem;background:none;border:none;cursor:pointer;font-size:1rem;font-weight:500;color:#64748b;border-bottom:3px solid transparent;transition:all 0.3s ease;white-space:nowrap">
+                <i class="fas fa-cloud"></i> Availability
+            </button>
+            <button class="tab" onclick="showTab('company', this)" style="padding:1rem 2rem;background:none;border:none;cursor:pointer;font-size:1rem;font-weight:500;color:#64748b;border-bottom:3px solid transparent;transition:all 0.3s ease;white-space:nowrap">
+                <i class="fas fa-building"></i> About Us
+            </button>
+        </div>
+
+        <!-- Features Tab -->
+        <div id="features" class="tab-content" style="display:block;padding:3rem 0">
+            <h2 style="text-align:center;font-size:2.5rem;font-weight:700;margin-bottom:1rem;color:#2d3748">Powerful Real-World Features</h2>
+            <p style="text-align:center;font-size:1.1rem;color:#718096;margin-bottom:3rem">Built for modern retail operations with practical functionality that works with any currency</p>
+            
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:2rem;margin-top:2rem">
+                <div style="background:white;padding:2.5rem;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:left;transition:transform 0.3s ease,box-shadow 0.3s ease;border-left:4px solid #714b67">
+                    <div style="display:flex;align-items:center;gap:15px;margin-bottom:1.5rem">
+                        <div style="width:60px;height:60px;background:linear-gradient(135deg,#714b67,#8b5a8c);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.5rem;flex-shrink:0">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3 style="font-size:1.3rem;font-weight:600;color:#2d3748;margin:0">Smart Amount-Based Entry</h3>
+                    </div>
+                    <p style="color:#4a5568;line-height:1.6">Enter purchase amounts in any currency and let the system automatically calculate the exact quantity needed. Perfect for weight-based products like fruits, vegetables, spices, and bulk items sold by measurement.</p>
+                    <ul style="list-style:none;padding:0;margin-top:1rem">
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Multi-currency amount input
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Automatic quantity calculation
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Real-time price validation
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Instant order line updates
+                        </li>
+                    </ul>
+                </div>
+
+                <div style="background:white;padding:2.5rem;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:left;transition:transform 0.3s ease,box-shadow 0.3s ease;border-left:4px solid #714b67">
+                    <div style="display:flex;align-items:center;gap:15px;margin-bottom:1.5rem">
+                        <div style="width:60px;height:60px;background:linear-gradient(135deg,#714b67,#8b5a8c);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.5rem;flex-shrink:0">
+                            <i class="fas fa-weight"></i>
+                        </div>
+                        <h3 style="font-size:1.3rem;font-weight:600;color:#2d3748;margin:0">Weight & Bulk Products</h3>
+                    </div>
+                    <p style="color:#4a5568;line-height:1.6">Specially designed for businesses selling products by weight, volume, or measurement. Enter the customer's budget and instantly get the exact quantity they can purchase within their spending limit.</p>
+                    <ul style="list-style:none;padding:0;margin-top:1rem">
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Weight-based calculations (kg/gram)
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Volume measurements (liters/ml)
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Decimal quantity precision
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Flexible price per unit handling
+                        </li>
+                    </ul>
+                </div>
+
+                <div style="background:white;padding:2.5rem;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:left;transition:transform 0.3s ease,box-shadow 0.3s ease;border-left:4px solid #714b67">
+                    <div style="display:flex;align-items:center;gap:15px;margin-bottom:1.5rem">
+                        <div style="width:60px;height:60px;background:linear-gradient(135deg,#714b67,#8b5a8c);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.5rem;flex-shrink:0">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 style="font-size:1.3rem;font-weight:600;color:#2d3748;margin:0">Multi-Currency Support</h3>
+                    </div>
+                    <p style="color:#4a5568;line-height:1.6">Works seamlessly with any currency configured in your Odoo system. From USD to EUR, INR to GBP - the module adapts to your local currency settings automatically without any additional configuration.</p>
+                    <ul style="list-style:none;padding:0;margin-top:1rem">
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Auto-detects system currency
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Supports 100+ currencies
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Decimal precision handling
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Regional formatting rules
+                        </li>
+                    </ul>
+                </div>
+
+                <div style="background:white;padding:2.5rem;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:left;transition:transform 0.3s ease,box-shadow 0.3s ease;border-left:4px solid #714b67">
+                    <div style="display:flex;align-items:center;gap:15px;margin-bottom:1.5rem">
+                        <div style="width:60px;height:60px;background:linear-gradient(135deg,#714b67,#8b5a8c);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.5rem;flex-shrink:0">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 style="font-size:1.3rem;font-weight:600;color:#2d3748;margin:0">Touch-Optimized Interface</h3>
+                    </div>
+                    <p style="color:#4a5568;line-height:1.6">Designed with touch devices in mind, featuring large buttons and intuitive interface. Works perfectly on tablets, POS terminals, and mobile devices with responsive design that adapts to any screen size.</p>
+                    <ul style="list-style:none;padding:0;margin-top:1rem">
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Large touch-friendly buttons
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Responsive mobile design
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Tablet-optimized layout
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Fast input methods
+                        </li>
+                    </ul>
+                </div>
+
+                <div style="background:white;padding:2.5rem;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:left;transition:transform 0.3s ease,box-shadow 0.3s ease;border-left:4px solid #714b67">
+                    <div style="display:flex;align-items:center;gap:15px;margin-bottom:1.5rem">
+                        <div style="width:60px;height:60px;background:linear-gradient(135deg,#714b67,#8b5a8c);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.5rem;flex-shrink:0">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 style="font-size:1.3rem;font-weight:600;color:#2d3748;margin:0">Real-Time Processing</h3>
+                    </div>
+                    <p style="color:#4a5568;line-height:1.6">Lightning-fast calculations and instant order updates with comprehensive error handling. No delays in your checkout process - calculations happen instantly as soon as amounts are entered.</p>
+                    <ul style="list-style:none;padding:0;margin-top:1rem">
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Instant mathematical calculations
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Live order line updates
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Comprehensive error prevention
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Zero latency processing
+                        </li>
+                    </ul>
+                </div>
+
+                <div style="background:white;padding:2.5rem;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:left;transition:transform 0.3s ease,box-shadow 0.3s ease;border-left:4px solid #714b67">
+                    <div style="display:flex;align-items:center;gap:15px;margin-bottom:1.5rem">
+                        <div style="width:60px;height:60px;background:linear-gradient(135deg,#714b67,#8b5a8c);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:1.5rem;flex-shrink:0">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 style="font-size:1.3rem;font-weight:600;color:#2d3748;margin:0">Robust Validation & Safety</h3>
+                    </div>
+                    <p style="color:#4a5568;line-height:1.6">Advanced input validation and error handling ensures data integrity and prevents calculation errors. Built-in safeguards protect against invalid inputs and system errors with user-friendly messaging.</p>
+                    <ul style="list-style:none;padding:0;margin-top:1rem">
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Input validation & sanitization
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> User-friendly error messages
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Data integrity protection
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Fail-safe error handling
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-logos">
-                <div class="app-icon">
-                    <img src="https://i.postimg.cc/8P6stwtw/icon.png">
+        <!-- Screenshots Tab -->
+        <div id="screenshots" class="tab-content" style="display:none;padding:3rem 0">
+            <h2 style="text-align:center;font-size:2.5rem;font-weight:700;margin-bottom:1rem;color:#2d3748">See It In Action</h2>
+            <p style="text-align:center;font-size:1.1rem;color:#718096;margin-bottom:3rem">Click on any screenshot to view detailed information</p>
+            
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin-top:2rem">
+                <div onclick="openScreenshotModal('pos-interface')" style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);transition:transform 0.3s ease;cursor:pointer">
+                    <div style="height:250px;background:linear-gradient(135deg,#f7fafc,#edf2f7);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+                        <div style="width:90%;height:90%;background:white;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.1);display:flex;flex-direction:column;padding:15px">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid #e2e8f0">
+                                <div style="display:flex;gap:5px">
+                                    <div style="width:8px;height:8px;border-radius:50%;background:#cbd5e0"></div>
+                                    <div style="width:8px;height:8px;border-radius:50%;background:#cbd5e0"></div>
+                                    <div style="width:8px;height:8px;border-radius:50%;background:#cbd5e0"></div>
+                                </div>
+                                <div style="font-size:0.7rem;color:#64748b">Odoo POS</div>
+                            </div>
+                            <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+                                <div style="background:#714b67;color:white;padding:8px 15px;border-radius:6px;font-size:0.8rem;text-align:center;display:flex;align-items:center;justify-content:center;gap:5px">
+                                    <i class="fas fa-calculator"></i> Enter Amount
+                                </div>
+                                <div style="background:#f7fafc;height:6px;border-radius:3px;margin:3px 0;width:80%"></div>
+                                <div style="background:#f7fafc;height:6px;border-radius:3px;margin:3px 0;width:60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding:1.5rem">
+                        <h4 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;color:#2d3748">
+                            POS Interface Integration <i class="fas fa-external-link-alt" style="font-size:0.8rem;color:#714b67"></i>
+                        </h4>
+                        <p>Seamlessly integrated "Enter Amount" button in the Odoo 18 POS interface, positioned for easy access during checkout.</p>
+                    </div>
                 </div>
-                <div class="plus-icon">+</div>
-                <div class="odoo-logo">
-                    <img src="https://i.postimg.cc/GtRsf7dt/odoo-Ready-Partner-Logo-01.png" alt="Odoo Logo">
+
+                <div onclick="openScreenshotModal('amount-entry')" style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);transition:transform 0.3s ease;cursor:pointer">
+                    <div style="height:250px;background:linear-gradient(135deg,#f7fafc,#edf2f7);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+                        <div style="width:90%;height:90%;background:white;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.1);display:flex;flex-direction:column;padding:15px">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid #e2e8f0">
+                                <div style="display:flex;gap:5px">
+                                    <div style="width:8px;height:8px;border-radius:50%;background:#cbd5e0"></div>
+                                    <div style="width:8px;height:8px;border-radius:50%;background:#cbd5e0"></div>
+                                    <div style="width:8px;height:8px;border-radius:50%;background:#cbd5e0"></div>
+                                </div>
+                                <div style="font-size:0.7rem;color:#64748b">Amount Entry</div>
+                            </div>
+                            <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+                                <div style="text-align:center;font-size:0.8rem;margin-bottom:10px">Enter Amount</div>
+                                <div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 12px;font-size:0.8rem">$250.00</div>
+                                <div style="display:flex;gap:5px;margin-top:10px">
+                                    <div style="background:#48bb78;color:white;padding:5px 10px;border-radius:4px;font-size:0.7rem;flex:1;text-align:center">Confirm</div>
+                                    <div style="background:#f56565;color:white;padding:5px 10px;border-radius:4px;font-size:0.7rem;flex:1;text-align:center">Cancel</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding:1.5rem">
+                        <h4 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;color:#2d3748">
+                            Amount Entry Popup <i class="fas fa-external-link-alt" style="font-size:0.8rem;color:#714b67"></i>
+                        </h4>
+                        <p>Clean, user-friendly popup for entering amounts with proper validation and confirmation buttons.</p>
+                    </div>
+                </div>
+
+                <div onclick="openScreenshotModal('auto-calculation')" style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);transition:transform 0.3s ease;cursor:pointer">
+                    <div style="height:250px;background:linear-gradient(135deg,#f7fafc,#edf2f7);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+                        <div style="width:90%;height:90%;background:white;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.1);display:flex;flex-direction:column;padding:15px">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid #e2e8f0">
+                                <div style="display:flex;gap:5px">
+                                    <div style="width:8px;height:8px;border-radius:50%;background:#cbd5e0"></div>
+                                    <div style="width:8px;height:8px;border-radius:50%;background:#cbd5e0"></div>
+                                    <div style="width:8px;height:8px;border-radius:50%;background:#cbd5e0"></div>
+                                </div>
+                                <div style="font-size:0.7rem;color:#64748b">Order Line</div>
+                            </div>
+                            <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+                                <div style="font-size:0.8rem;margin-bottom:8px">Bagel ($1.25/kg)</div>
+                                <div style="display:flex;justify-content:space-between;font-size:0.7rem;margin-bottom:5px">
+                                    <span>Qty: 200.0000 kg</span>
+                                    <span>$250.00</span>
+                                </div>
+                                <div style="background:#f7fafc;height:2px;border-radius:3px;margin:3px 0;width:100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding:1.5rem">
+                        <h4 style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;color:#2d3748">
+                            Automatic Calculation <i class="fas fa-external-link-alt" style="font-size:0.8rem;color:#714b67"></i>
+                        </h4>
+                        <p>Real-time quantity calculation based on entered amount and product price, with instant order line updates.</p>
+                    </div>
                 </div>
             </div>
-            <div class="version-badge">
-                <i class="fab fa-odoo"></i> Odoo 18 POS Module
-            </div>
-            <h1>POS Manual Amount Entry</h1>
-            <p>Revolutionary Point of Sale module that allows cashiers to enter amounts in any currency and automatically calculate product quantities. Perfect for retail businesses dealing with weight-based products, bulk items, and flexible pricing scenarios.</p>
         </div>
-    </section>
 
-    <!-- Tabs Container -->
-    <div class="tabs-container">
-        <div class="container">
-            <div class="tabs">
-                <button class="tab active" onclick="showTab('features', this)">
-                    <i class="fas fa-star"></i> Features
-                </button>
-                <button class="tab" onclick="showTab('screenshots', this)">
-                    <i class="fas fa-images"></i> Screenshots
-                </button>
-                <button class="tab" onclick="showTab('technical', this)">
-                    <i class="fas fa-cogs"></i> Technical Specs
-                </button>
-                <button class="tab" onclick="showTab('availability', this)">
-                    <i class="fas fa-cloud"></i> Availability
-                </button>
-                <button class="tab" onclick="showTab('company', this )">
-                    <i class="fas fa-building"></i> About Us
-                </button>
-                <button class="tab" onclick="showTab('reviews', this)">
-                    <i class="fas fa-star"></i> Reviews & Rating
-                </button>
+        <!-- Technical Specs Tab -->
+        <div id="technical" class="tab-content" style="display:none;padding:3rem 0">
+            <h2 style="text-align:center;font-size:2.5rem;font-weight:700;margin-bottom:1rem;color:#2d3748">Technical Specifications</h2>
+            <p style="text-align:center;font-size:1.1rem;color:#718096;margin-bottom:3rem">Click on any specification to view detailed information</p>
+            
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:2rem">
+                <div onclick="toggleSpecDetails(this)" style="background:white;padding:2rem;border-radius:12px;border-left:4px solid #714b67;box-shadow:0 2px 10px rgba(0,0,0,0.05);cursor:pointer;transition:all 0.3s ease">
+                    <h4 style="font-weight:600;margin-bottom:0.5rem;color:#2d3748;display:flex;align-items:center;gap:10px">
+                        <i class="fab fa-odoo"></i> Odoo Version
+                    </h4>
+                    <p style="color:#718096">Specifically designed and tested for Odoo 18 with full compatibility</p>
+                    <div class="spec-details" style="margin-top:1rem;padding-top:1rem;border-top:1px solid #e2e8f0;display:none">
+                        <ul style="list-style:none;padding:0">
+                            <li style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;color:#4a5568;font-size:0.9rem">
+                                <i class="fas fa-check" style="color:#48bb78;font-size:0.8rem"></i> Odoo 18.0 Community Edition
+                            </li>
+                            <li style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;color:#4a5568;font-size:0.9rem">
+                                <i class="fas fa-check" style="color:#48bb78;font-size:0.8rem"></i> Odoo 18.0 Enterprise Edition
+                            </li>
+                            <li style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;color:#4a5568;font-size:0.9rem">
+                                <i class="fas fa-check" style="color:#48bb78;font-size:0.8rem"></i> Backward compatible with 17.0
+                            </li>
+                            <li style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;color:#4a5568;font-size:0.9rem">
+                                <i class="fas fa-check" style="color:#48bb78;font-size:0.8rem"></i> Future-ready architecture
+                            </li>
+                            <li style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;color:#4a5568;font-size:0.9rem">
+                                <i class="fas fa-check" style="color:#48bb78;font-size:0.8rem"></i> Tested on latest stable release
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <!-- Features Tab -->
-            <div id="features" class="tab-content active">
-                <h2 class="section-title">Powerful Real-World Features</h2>
-                <p class="section-subtitle">Built for modern retail operations with practical functionality</p>
+        <!-- Availability Tab -->
+        <div id="availability" class="tab-content" style="display:none;padding:3rem 0">
+            <h2 style="text-align:center;font-size:2.5rem;font-weight:700;margin-bottom:1rem;color:#2d3748">Platform Availability</h2>
+            <p style="text-align:center;font-size:1.1rem;color:#718096;margin-bottom:3rem">Choose your preferred Odoo deployment option</p>
+            
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin-top:2rem">
+                <div style="background:white;padding:2rem;border-radius:12px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.1);transition:transform 0.3s ease;border-top:4px solid #48bb78">
+                    <div style="width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.5rem;color:white;background:#48bb78">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h3>On-Premise Odoo</h3>
+                    <p>Perfect for self-hosted Odoo installations with full control and customization options. Easy installation and configuration.</p>
+                    <ul style="list-style:none;padding:0;text-align:left;margin-top:1rem">
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Full customization control
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> No restrictions
+                        </li>
+                        <li style="display:flex;align-items:center;gap:10px;margin-bottom:0.5rem;color:#4a5568">
+                            <i class="fas fa-check" style="color:#48bb78;font-size:0.9rem"></i> Direct file access
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company Tab -->
+        <div id="company" class="tab-content" style="display:none;padding:3rem 0">
+            <div style="padding:4rem 0;background:white;color:#333">
+                <h2 style="text-align:center;font-size:2.5rem;font-weight:700;margin-bottom:1rem;color:#2d3748">About Spopli Web Development & Services</h2>
+                <p style="text-align:center;font-size:1.1rem;color:#718096;margin-bottom:3rem">Your trusted Odoo Ready partner for custom development and solutions</p>
                 
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <div class="feature-icon">
-                                <i class="fas fa-rupee-sign"></i>
-                            </div>
-                            <h3>Amount-Based Entry</h3>
-                        </div>
-                        <p>Enter amounts in any currency and let the system automatically calculate the exact quantity needed. Perfect for weight-based products like fruits, vegetables, and bulk items.</p>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> Direct rupee amount input</li>
-                            <li><i class="fas fa-check"></i> Automatic quantity calculation</li>
-                            <li><i class="fas fa-check"></i> Real-time price validation</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <div class="feature-icon">
-                                <i class="fas fa-weight"></i>
-                            </div>
-                            <h3>Weight-Based Products</h3>
-                        </div>
-                        <p>Specially designed for businesses selling products by weight. Enter the customer's budget and get the exact quantity they can purchase.</p>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> Kg/gram calculations</li>
-                            <li><i class="fas fa-check"></i> Decimal quantity support</li>
-                            <li><i class="fas fa-check"></i> Price per unit flexibility</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <div class="feature-icon">
-                                <i class="fas fa-mobile-alt"></i>
-                            </div>
-                            <h3>Touch-Friendly Interface</h3>
-                        </div>
-                        <p>Optimized for touch devices with large buttons and intuitive design. Works perfectly on tablets and POS terminals.</p>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> Large touch targets</li>
-                            <li><i class="fas fa-check"></i> Responsive design</li>
-                            <li><i class="fas fa-check"></i> Fast input methods</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <div class="feature-icon">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <h3>Real-Time Processing</h3>
-                        </div>
-                        <p>Instant calculations and order updates with comprehensive error handling. No delays in your checkout process.</p>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> Instant calculations</li>
-                            <li><i class="fas fa-check"></i> Live order updates</li>
-                            <li><i class="fas fa-check"></i> Error prevention</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <div class="feature-icon">
-                                <i class="fas fa-store"></i>
-                            </div>
-                            <h3>Retail-Ready</h3>
-                        </div>
-                        <p>Built specifically for retail environments with features that speed up checkout and improve customer experience.</p>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> Fast checkout process</li>
-                            <li><i class="fas fa-check"></i> Customer-friendly display</li>
-                            <li><i class="fas fa-check"></i> Multi-product support</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <div class="feature-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h3>Robust Validation</h3>
-                        </div>
-                        <p>Advanced input validation and error handling ensures data integrity and prevents calculation errors.</p>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check"></i> Input validation</li>
-                            <li><i class="fas fa-check"></i> Error messages</li>
-                            <li><i class="fas fa-check"></i> Data integrity</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screenshots Tab -->
-            <div id="screenshots" class="tab-content">
-                <h2 class="section-title">See It In Action</h2>
-                <p class="section-subtitle">Click on any screenshot to view detailed information</p>
-                
-                <div class="screenshot-grid">
-                    <div class="screenshot-card" onclick="openScreenshotModal('pos-interface')">
-                        <div class="screenshot-image">
-                            <div class="screenshot-mockup">
-                                <div class="mockup-header">
-                                    <div class="mockup-dots">
-                                        <div class="mockup-dot"></div>
-                                        <div class="mockup-dot"></div>
-                                        <div class="mockup-dot"></div>
-                                    </div>
-                                    <div style="font-size: 0.7rem; color: #64748b;">Odoo POS</div>
-                                </div>
-                                <div class="mockup-content">
-                                    <div class="mockup-button">
-                                        <i class="fas fa-calculator"></i> Enter Amount
-                                    </div>
-                                    <div class="mockup-text" style="width: 80%;"></div>
-                                    <div class="mockup-text" style="width: 60%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="screenshot-info">
-                            <h4>POS Interface Integration <i class="fas fa-external-link-alt" style="font-size: 0.8rem; color: #714b67;"></i></h4>
-                            <p>Seamlessly integrated "Enter Amount" button in the Odoo 18 POS interface, positioned for easy access during checkout.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="screenshot-card" onclick="openScreenshotModal('amount-entry')">
-                        <div class="screenshot-image">
-                            <div class="screenshot-mockup">
-                                <div class="mockup-header">
-                                    <div class="mockup-dots">
-                                        <div class="mockup-dot"></div>
-                                        <div class="mockup-dot"></div>
-                                        <div class="mockup-dot"></div>
-                                    </div>
-                                    <div style="font-size: 0.7rem; color: #64748b;">Amount Entry</div>
-                                </div>
-                                <div class="mockup-content">
-                                    <div style="text-align: center; font-size: 0.8rem; margin-bottom: 10px;">Enter Amount (₹)</div>
-                                    <div class="mockup-input">₹ 250.00</div>
-                                    <div style="display: flex; gap: 5px; margin-top: 10px;">
-                                        <div style="background: #48bb78; color: white; padding: 5px 10px; border-radius: 4px; font-size: 0.7rem; flex: 1; text-align: center;">Confirm</div>
-                                        <div style="background: #f56565; color: white; padding: 5px 10px; border-radius: 4px; font-size: 0.7rem; flex: 1; text-align: center;">Cancel</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="screenshot-info">
-                            <h4>Amount Entry Popup <i class="fas fa-external-link-alt" style="font-size: 0.8rem; color: #714b67;"></i></h4>
-                            <p>Clean, user-friendly popup for entering amounts with proper validation and confirmation buttons.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="screenshot-card" onclick="openScreenshotModal('auto-calculation')">
-                        <div class="screenshot-image">
-                            <div class="screenshot-mockup">
-                                <div class="mockup-header">
-                                    <div class="mockup-dots">
-                                        <div class="mockup-dot"></div>
-                                        <div class="mockup-dot"></div>
-                                        <div class="mockup-dot"></div>
-                                    </div>
-                                    <div style="font-size: 0.7rem; color: #64748b;">Order Line</div>
-                                </div>
-                                <div class="mockup-content">
-                                    <div style="font-size: 0.8rem; margin-bottom: 8px;">Apples (₹50/kg)</div>
-                                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 5px;">
-                                        <span>Qty: 5.00 kg</span>
-                                        <span>₹250.00</span>
-                                    </div>
-                                    <div class="mockup-text" style="width: 100%; height: 2px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="screenshot-info">
-                            <h4>Automatic Calculation <i class="fas fa-external-link-alt" style="font-size: 0.8rem; color: #714b67;"></i></h4>
-                            <p>Real-time quantity calculation based on entered amount and product price, with instant order line updates.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Technical Specs Tab -->
-            <div id="technical" class="tab-content">
-                <h2 class="section-title">Technical Specifications</h2>
-                <p class="section-subtitle">Click on any specification to view detailed information</p>
-                
-                <div class="specs-grid">
-                    <div class="spec-item" onclick="toggleSpecDetails(this)">
-                        <h4><i class="fab fa-odoo"></i> Odoo Version</h4>
-                        <p>Specifically designed and tested for Odoo 18 with full compatibility</p>
-                        <div class="spec-details">
-                            <ul>
-                                <li><i class="fas fa-check"></i> Odoo 18.0 Community Edition</li>
-                                <li><i class="fas fa-check"></i> Odoo 18.0 Enterprise Edition</li>
-                                <li><i class="fas fa-check"></i> Backward compatible with 17.0</li>
-                                <li><i class="fas fa-check"></i> Future-ready architecture</li>
-                                <li><i class="fas fa-check"></i> Tested on latest stable release</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="spec-item" onclick="toggleSpecDetails(this)">
-                        <h4><i class="fas fa-code"></i> Framework</h4>
-                        <p>Built with OWL Framework, JavaScript ES6+, and modern web standards</p>
-                        <div class="spec-details">
-                            <ul>
-                                <li><i class="fas fa-check"></i> OWL (Odoo Web Library) Framework</li>
-                                <li><i class="fas fa-check"></i> JavaScript ES6+ syntax</li>
-                                <li><i class="fas fa-check"></i> XML templating system</li>
-                                <li><i class="fas fa-check"></i> Python backend integration</li>
-                                <li><i class="fas fa-check"></i> Modern web standards compliance</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="spec-item" onclick="toggleSpecDetails(this)">
-                        <h4><i class="fas fa-database"></i> Dependencies</h4>
-                        <p>Requires: base, point_of_sale modules (standard Odoo modules)</p>
-                        <div class="spec-details">
-                            <ul>
-                                <li><i class="fas fa-check"></i> base (Odoo core module)</li>
-                                <li><i class="fas fa-check"></i> point_of_sale (POS module)</li>
-                                <li><i class="fas fa-check"></i> web (Web framework)</li>
-                                <li><i class="fas fa-check"></i> No external dependencies</li>
-                                <li><i class="fas fa-check"></i> Lightweight installation</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="spec-item" onclick="toggleSpecDetails(this)">
-                        <h4><i class="fas fa-paint-brush"></i> UI Framework</h4>
-                        <p>Bootstrap 5 with custom CSS for seamless Odoo integration</p>
-                        <div class="spec-details">
-                            <ul>
-                                <li><i class="fas fa-check"></i> Bootstrap 5 responsive grid</li>
-                                <li><i class="fas fa-check"></i> Custom CSS animations</li>
-                                <li><i class="fas fa-check"></i> Odoo theme integration</li>
-                                <li><i class="fas fa-check"></i> Touch-optimized controls</li>
-                                <li><i class="fas fa-check"></i> Cross-browser compatibility</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="spec-item" onclick="toggleSpecDetails(this)">
-                        <h4><i class="fas fa-key"></i> License</h4>
-                        <p>LGPL-3 License - Open source and commercially friendly</p>
-                        <div class="spec-details">
-                            <ul>
-                                <li><i class="fas fa-check"></i> LGPL-3 Open Source License</li>
-                                <li><i class="fas fa-check"></i> Commercial use allowed</li>
-                                <li><i class="fas fa-check"></i> Modification permitted</li>
-                                <li><i class="fas fa-check"></i> Distribution allowed</li>
-                                <li><i class="fas fa-check"></i> No warranty disclaimer</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="spec-item" onclick="toggleSpecDetails(this)">
-                        <h4><i class="fas fa-download"></i> Installation</h4>
-                        <p>One-click installation through Odoo Apps or manual upload</p>
-                        <div class="spec-details">
-                            <ul>
-                                <li><i class="fas fa-check"></i> Odoo Apps Store installation</li>
-                                <li><i class="fas fa-check"></i> Manual ZIP file upload</li>
-                                <li><i class="fas fa-check"></i> Git repository cloning</li>
-                                <li><i class="fas fa-check"></i> Automatic dependency resolution</li>
-                                <li><i class="fas fa-check"></i> No server restart required</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="spec-item" onclick="toggleSpecDetails(this)">
-                        <h4><i class="fas fa-language"></i> Localization</h4>
-                        <p>Supports Indian Rupee (₹) currency with decimal precision</p>
-                        <div class="spec-details">
-                            <ul>
-                                <li><i class="fas fa-check"></i> Indian Rupee (₹) support</li>
-                                <li><i class="fas fa-check"></i> Decimal precision handling</li>
-                                <li><i class="fas fa-check"></i> Multi-currency compatibility</li>
-                                <li><i class="fas fa-check"></i> Regional number formatting</li>
-                                <li><i class="fas fa-check"></i> Translation ready</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="spec-item" onclick="toggleSpecDetails(this)">
-                        <h4><i class="fas fa-users"></i> Multi-User</h4>
-                        <p>Supports multiple POS sessions and concurrent users</p>
-                        <div class="spec-details">
-                            <ul>
-                                <li><i class="fas fa-check"></i> Multiple POS sessions</li>
-                                <li><i class="fas fa-check"></i> Concurrent user support</li>
-                                <li><i class="fas fa-check"></i> Session isolation</li>
-                                <li><i class="fas fa-check"></i> User permission control</li>
-                                <li><i class="fas fa-check"></i> Real-time synchronization</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Availability Tab -->
-            <div id="availability" class="tab-content">
-                <h2 class="section-title">Platform Availability</h2>
-                <p class="section-subtitle">Choose your preferred Odoo deployment option</p>
-                
-                <div class="availability-cards">
-                    <div class="availability-card available">
-                        <div class="availability-icon">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <h3>On-Premise Odoo</h3>
-                        <p>Perfect for self-hosted Odoo installations with full control and customization options. Easy installation and configuration.</p>
-                        <ul class="feature-list" style="text-align: left; margin-top: 1rem;">
-                            <li><i class="fas fa-check"></i> Full customization control</li>
-                            <li><i class="fas fa-check"></i> No restrictions</li>
-                            <li><i class="fas fa-check"></i> Direct file access</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="availability-card available">
-                        <div class="availability-icon">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <h3>Odoo SH (Odoo.sh)</h3>
-                        <p>Fully compatible with Odoo SH cloud platform for seamless deployment and automatic updates.</p>
-                        <ul class="feature-list" style="text-align: left; margin-top: 1rem;">
-                            <li><i class="fas fa-check"></i> Cloud deployment</li>
-                            <li><i class="fas fa-check"></i> Automatic backups</li>
-                            <li><i class="fas fa-check"></i> Easy updates</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="availability-card unavailable">
-                        <div class="availability-icon">
-                            <i class="fas fa-times"></i>
-                        </div>
-                        <h3>Odoo Online</h3>
-                        <p>Currently not available for Odoo Online due to platform restrictions on custom JavaScript modules.</p>
-                        <ul class="feature-list" style="text-align: left; margin-top: 1rem; opacity: 0.6;">
-                            <li><i class="fas fa-times"></i> Platform restrictions</li>
-                            <li><i class="fas fa-times"></i> Limited JS support</li>
-                            <li><i class="fas fa-times"></i> Not compatible</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Company Tab -->
-            <div id="company" class="tab-content">
-                <div class="company-info-section" style="background: white; color: #333; padding: 2rem 0;">
-                    <h2 class="section-title">About Spopli Web Development</h2>
-                    <p class="section-subtitle">Your trusted Odoo partner for custom development and solutions</p>
-                    
-                    <div class="company-grid">
-                        <div class="company-card" style="background: #f7fafc; color: #333;">
-                            <h3 style="color: #2d3748;"><i class="fas fa-building"></i> Company Overview</h3>
-                            <p>Spopli Web Development & Services is a certified Odoo partner specializing in custom module development, implementation, and comprehensive support services. We help businesses optimize their operations with tailored Odoo solutions.</p>
-                        </div>
-                        
-                        <div class="company-card" style="background: #f7fafc; color: #333;">
-                            <h3 style="color: #2d3748;"><i class="fas fa-phone"></i> Contact Information</h3>
-                            <div class="contact-item" style="color: #4a5568;">
-                                <i class="fas fa-phone"></i>
-                                <span>Primary: (+91) 2562 275457</span>
-                            </div>
-                            <div class="contact-item" style="color: #4a5568;">
-                                <i class="fas fa-phone"></i>
-                                <span>Secondary: (+91) 253 2957088</span>
-                            </div>
-                            <div class="contact-item" style="color: #4a5568;">
-                                <i class="fas fa-envelope"></i>
-                                <span>chintu2411@gmail.com</span>
-                            </div>
-                            <div class="contact-item" style="color: #4a5568;">
-                                <i class="fas fa-globe"></i>
-                                <span>https://spopli.com</span>
-                            </div>
-                        </div>
-                        
-                        <div class="company-card" style="background: #f7fafc; color: #333;">
-                            <h3 style="color: #2d3748;"><i class="fas fa-cogs"></i> Our Services</h3>
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="margin-bottom: 0.5rem; color: #4a5568;"><i class="fas fa-check" style="color: #48bb78; margin-right: 8px;"></i> Custom Odoo Module Development</li>
-                                <li style="margin-bottom: 0.5rem; color: #4a5568;"><i class="fas fa-check" style="color: #48bb78; margin-right: 8px;"></i> Odoo Implementation & Setup</li>
-                                <li style="margin-bottom: 0.5rem; color: #4a5568;"><i class="fas fa-check" style="color: #48bb78; margin-right: 8px;"></i> Technical Support & Maintenance</li>
-                                <li style="margin-bottom: 0.5rem; color: #4a5568;"><i class="fas fa-check" style="color: #48bb78; margin-right: 8px;"></i> Web Development Services</li>
-                                <li style="margin-bottom: 0.5rem; color: #4a5568;"><i class="fas fa-check" style="color: #48bb78; margin-right: 8px;"></i> Odoo Training & Consultation</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="company-card" style="background: #f7fafc; color: #333;">
-                            <h3 style="color: #2d3748;"><i class="fab fa-odoo"></i> Odoo Partnership</h3>
-                            <p>As an official Odoo partner, we provide certified solutions and maintain the highest standards of quality and compatibility. Our modules are tested and optimized for production environments.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reviews & Rating Tab -->
-            <div id="reviews" class="tab-content">
-                <h2 class="section-title">Customer Reviews & Ratings</h2>
-                <p class="section-subtitle">See what our customers say about this module</p>
-                
-                <!-- Overall Rating Summary -->
-                <div class="rating-summary">
-                    <div class="overall-rating">
-                        <div class="rating-score" id="averageRating">4.8</div>
-                        <div class="rating-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="rating-count" id="totalReviews">Based on 47 reviews</div>
-                    </div>
-                    <div class="rating-breakdown" id="ratingBreakdown">
-                        <div class="rating-bar">
-                            <span>5 stars</span>
-                            <div class="bar"><div class="fill" style="width: 85%"></div></div>
-                            <span>40</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span>4 stars</span>
-                            <div class="bar"><div class="fill" style="width: 10%"></div></div>
-                            <span>5</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span>3 stars</span>
-                            <div class="bar"><div class="fill" style="width: 4%"></div></div>
-                            <span>2</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span>2 stars</span>
-                            <div class="bar"><div class="fill" style="width: 0%"></div></div>
-                            <span>0</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span>1 star</span>
-                            <div class="bar"><div class="fill" style="width: 0%"></div></div>
-                            <span>0</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Add Review Form -->
-                <div class="add-review-section">
-                    <h3>Write a Review</h3>
-                    <div class="review-form">
-                        <div class="form-group">
-                            <label>Your Rating:</label>
-                            <div class="star-rating" id="userRating">
-                                <i class="far fa-star" data-rating="1"></i>
-                                <i class="far fa-star" data-rating="2"></i>
-                                <i class="far fa-star" data-rating="3"></i>
-                                <i class="far fa-star" data-rating="4"></i>
-                                <i class="far fa-star" data-rating="5"></i>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="Your Name" id="reviewerName" class="form-input">
-                        </div>
-                        <div class="form-group">
-                            <input type="email" placeholder="Your Email (optional)" id="reviewerEmail" class="form-input">
-                        </div>
-                        <div class="form-group">
-                            <textarea placeholder="Write your review here..." id="reviewText" class="form-textarea"></textarea>
-                        </div>
-                        <button class="submit-review-btn" onclick="submitReview()">
-                            <i class="fas fa-paper-plane"></i> Submit Review
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Customer Reviews -->
-                <div class="reviews-list" id="reviewsList">
-                    <!-- Reviews will be dynamically loaded here -->
-                </div>
-
-                <!-- Enhanced Pagination -->
-                <div class="pagination-container" id="paginationContainer">
-                    <div class="pagination-buttons" id="paginationButtons">
-                        <!-- Pagination buttons will be dynamically generated -->
-                    </div>
-                    <div class="pagination-info" id="paginationInfo">
-                        <!-- Page information will be displayed here -->
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:3rem;margin-top:2rem">
+                    <div style="background:#f7fafc;padding:2rem;border-radius:12px;backdrop-filter:blur(10px)">
+                        <h3 style="font-size:1.3rem;margin-bottom:1rem;color:#2d3748;display:flex;align-items:center;gap:10px">
+                            <i class="fas fa-building"></i> Company Overview
+                        </h3>
+                        <p>Spopli Web Development & Services is a certified Odoo Ready partner specializing in custom module development, implementation, and comprehensive support services. We help businesses optimize their operations with tailored Odoo solutions.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Screenshot Modal -->
-    <div id="screenshotModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Screenshot Details</h3>
-                <button class="close-modal" onclick="closeModal()">&times;</button>
+<!-- Screenshot Modal -->
+<div id="screenshotModal" style="display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.9)">
+    <div style="background:white;border-radius:12px;max-width:90%;max-height:90%;overflow-y:auto;position:relative;margin:5% auto">
+        <div style="padding:2rem;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center">
+            <h3 id="modalTitle">Screenshot Details</h3>
+            <button onclick="closeModal()" style="background:none;border:none;font-size:2rem;cursor:pointer;color:#64748b;transition:color 0.3s ease">&times;</button>
+        </div>
+        <div id="modalBody" style="padding:2rem"></div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer style="background:#1a202c;color:white;padding:2rem 0;text-align:center">
+    <div style="max-width:1200px;margin:0 auto;padding:0 20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+            <div>
+                <p>&copy; 2024 Spopli Web Development & Services. All rights reserved.</p>
             </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Content will be dynamically loaded -->
+            <div style="display:flex;gap:2rem">
+                <a href="https://spopli.com" style="color:#cbd5e0;text-decoration:none;transition:color 0.3s ease">Website</a>
+                <a href="mailto:chintu2411@gmail.com" style="color:#cbd5e0;text-decoration:none;transition:color 0.3s ease">Support</a>
+                <a href="tel:+912562275457" style="color:#cbd5e0;text-decoration:none;transition:color 0.3s ease">Contact</a>
             </div>
         </div>
     </div>
+</footer>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div>
-                    <p>&copy; 2024 Spopli Web Development & Services. All rights reserved.</p>
-                </div>
-                <div class="footer-links">
-                    <a href="https://spopli.com">Website</a>
-                    <a href="mailto:chintu2411@gmail.com">Support</a>
-                    <a href="tel:+912562275457">Contact</a>
-                </div>
+<script>
+function showTab(tabName, clickedTab) {
+    document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.style.color = '#64748b';
+        tab.style.borderBottomColor = 'transparent';
+        tab.style.background = 'none';
+    });
+    const selectedContent = document.getElementById(tabName);
+    if (selectedContent) selectedContent.style.display = 'block';
+    if (clickedTab) {
+        clickedTab.style.color = '#714b67';
+        clickedTab.style.borderBottomColor = '#714b67';
+        clickedTab.style.background = 'rgba(113,75,103,0.05)';
+    }
+}
+
+function toggleSpecDetails(element) {
+    const details = element.querySelector('.spec-details');
+    const isActive = details.style.display === 'block';
+    document.querySelectorAll('.spec-details').forEach(detail => detail.style.display = 'none');
+    if (!isActive) details.style.display = 'block';
+}
+
+const screenshotData = {
+    'pos-interface': {
+        title: 'POS Interface Integration',
+        content: `<img src="https://i.postimg.cc/YSxT4Sw4/1.png" alt="POS Interface" style="width:100%;max-width:800px;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.1);margin-bottom:2rem">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin-top:2rem">
+            <div style="background:#f7fafc;padding:1.5rem;border-radius:8px;border-left:4px solid #714b67">
+                <h5 style="font-weight:600;margin-bottom:0.5rem;color:#2d3748"><i class="fas fa-mouse-pointer"></i> Button Placement</h5>
+                <p>The "Enter Amount" button is strategically placed in the POS interface for easy access during checkout operations.</p>
             </div>
-        </div>
-    </footer>
+        </div>`
+    },
+    'amount-entry': {
+        title: 'Amount Entry Popup',
+        content: `<img src="https://i.postimg.cc/B6Qk2Gqm/2.png" alt="Amount Entry Popup" style="width:100%;max-width:800px;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.1);margin-bottom:2rem">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin-top:2rem">
+            <div style="background:#f7fafc;padding:1.5rem;border-radius:8px;border-left:4px solid #714b67">
+                <h5 style="font-weight:600;margin-bottom:0.5rem;color:#2d3748"><i class="fas fa-keyboard"></i> Input Validation</h5>
+                <p>Real-time validation ensures only valid numeric amounts can be entered, preventing calculation errors.</p>
+            </div>
+        </div>`
+    },
+    'auto-calculation': {
+        title: 'Automatic Calculation',
+        content: `<img src="https://i.postimg.cc/0QW3fHjP/3.png" alt="Auto Calculation" style="width:100%;max-width:800px;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.1);margin-bottom:2rem">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin-top:2rem">
+            <div style="background:#f7fafc;padding:1.5rem;border-radius:8px;border-left:4px solid #714b67">
+                <h5 style="font-weight:600;margin-bottom:0.5rem;color:#2d3748"><i class="fas fa-calculator"></i> Real-time Math</h5>
+                <p>Instant calculation of quantity based on entered amount and product price with high precision arithmetic.</p>
+            </div>
+        </div>`
+    }
+};
 
-    <!-- Firebase Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    
-    <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBTcNVOY60AqR4chHHWdlBSV-zm_MV3mss",
-            authDomain: "odoo-application-amount-manual.firebaseapp.com",
-            databaseURL: "https://odoo-application-amount-manual-default-rtdb.firebaseio.com",
-            projectId: "odoo-application-amount-manual",
-            storageBucket: "odoo-application-amount-manual.appspot.com",
-            messagingSenderId: "548123464039",
-            appId: "1:548123464039:web:081ae917160d0724461fc2",
-            measurementId: "G-727W6TJSJG"
-        };
+function openScreenshotModal(screenshotId) {
+    const modal = document.getElementById('screenshotModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const data = screenshotData[screenshotId];
+    if (data) {
+        modalTitle.textContent = data.title;
+        modalBody.innerHTML = data.content;
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+        document.body.style.overflow = 'hidden';
+    }
+}
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+function closeModal() {
+    const modal = document.getElementById('screenshotModal');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
 
-        // Global Variables
-        const REVIEWS_PER_PAGE = 2;
-        let allReviews = [];
-        let currentPage = 1;
-        let currentRating = 0;
-        let helpfulReviews = new Set();
+document.getElementById('screenshotModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
 
-        // Sample Reviews Data
-        const sampleReviews = [
-            {
-                id: '1',
-                name: 'Rajesh Kumar',
-                email: 'rajesh@example.com',
-                rating: 5,
-                text: 'Excellent module! This has revolutionized our fruit and vegetable sales. Customers can now tell us their budget and we instantly know how much quantity to give them. Very user-friendly and works perfectly with our POS system.',
-                timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-                helpful: 12
-            },
-            {
-                id: '2',
-                name: 'Priya Sharma',
-                email: 'priya@example.com',
-                rating: 5,
-                text: 'Perfect for our bulk sales! The automatic calculation feature saves so much time during busy hours. Installation was smooth and Spopli team provided excellent support. Highly recommended for retail businesses.',
-                timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-                helpful: 8
-            },
-            {
-                id: '3',
-                name: 'Mohammed Ali',
-                email: 'mohammed@example.com',
-                rating: 4,
-                text: 'Great module with excellent functionality. Works exactly as described. The touch interface is very responsive. Only minor suggestion would be to add more currency options, but for Indian businesses, it\'s perfect!',
-                timestamp: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-                helpful: 15
-            },
-            {
-                id: '4',
-                name: 'Sunita Patel',
-                email: 'sunita@example.com',
-                rating: 5,
-                text: 'Amazing solution for weight-based products! Our customers love how quickly we can tell them exactly how much they can buy within their budget. The interface is intuitive and error-free.',
-                timestamp: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(),
-                helpful: 6
-            },
-            {
-                id: '5',
-                name: 'Vikram Singh',
-                email: 'vikram@example.com',
-                rating: 5,
-                text: 'Fantastic module! Integrates seamlessly with Odoo 18. The real-time calculations are accurate and fast. Our checkout process has become much more efficient.',
-                timestamp: new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString(),
-                helpful: 9
-            },
-            {
-                id: '6',
-                name: 'Anjali Gupta',
-                email: 'anjali@example.com',
-                rating: 4,
-                text: 'Very useful for our grocery store. The amount entry feature is exactly what we needed. Installation was straightforward and the documentation is clear.',
-                timestamp: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000).toISOString(),
-                helpful: 4
-            },
-            {
-                id: '7',
-                name: 'Ravi Mehta',
-                email: 'ravi@example.com',
-                rating: 5,
-                text: 'Outstanding module! Our staff picked it up quickly and customers appreciate the transparency in pricing. The automatic quantity calculation is spot-on every time.',
-                timestamp: new Date(Date.now() - 42 * 24 * 60 * 60 * 1000).toISOString(),
-                helpful: 11
-            },
-            {
-                id: '8',
-                name: 'Kavita Joshi',
-                email: 'kavita@example.com',
-                rating: 5,
-                text: 'Perfect solution for our retail chain! The touch-friendly interface works great on our tablets. Spopli support team was very responsive during setup.',
-                timestamp: new Date(Date.now() - 49 * 24 * 60 * 60 * 1000).toISOString(),
-                helpful: 7
-            },
-            {
-                id: '9',
-                name: 'Arjun Reddy',
-                email: 'arjun@example.com',
-                rating: 5,
-                text: 'Excellent value for money! This module has streamlined our billing process significantly. The automatic calculations are always accurate and save us time.',
-                timestamp: new Date(Date.now() - 56 * 24 * 60 * 60 * 1000).toISOString(),
-                helpful: 13
-            },
-            {
-                id: '10',
-                name: 'Meera Nair',
-                email: 'meera@example.com',
-                rating: 4,
-                text: 'Good module with solid functionality. Works well for our spice shop where customers often buy by budget rather than weight. Easy to use interface.',
-                timestamp: new Date(Date.now() - 63 * 24 * 60 * 60 * 1000).toISOString(),
-                helpful: 5
-            }
-        ];
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+});
 
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            const activeTab = document.querySelector('.tab.active');
-            if (activeTab) {
-                const tabName = activeTab.textContent.toLowerCase().includes('features') ? 'features' : 'features';
-                showTab(tabName, activeTab);
-            }
-            
-            // Initialize star rating
-            initializeStarRating();
-            
-            // Load reviews from Firebase
-            loadReviewsFromFirebase();
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    showTab('features', document.querySelector('.tab.active'));
+});
+</script>
 
-        // Tab functionality
-        function showTab(tabName, clickedTab) {
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            const selectedContent = document.getElementById(tabName);
-            if (selectedContent) {
-                selectedContent.classList.add('active');
-            }
-            
-            if (clickedTab) {
-                clickedTab.classList.add('active');
-            }
-        }
-
-        // Star rating functionality
-        function initializeStarRating() {
-            const stars = document.querySelectorAll('#userRating i');
-            
-            stars.forEach((star, index) => {
-                star.addEventListener('mouseover', () => {
-                    highlightStars(index + 1);
-                });
-                
-                star.addEventListener('mouseout', () => {
-                    highlightStars(currentRating);
-                });
-                
-                star.addEventListener('click', () => {
-                    currentRating = index + 1;
-                    highlightStars(currentRating);
-                });
-            });
-            
-            function highlightStars(rating) {
-                stars.forEach((star, index) => {
-                    if (index < rating) {
-                        star.classList.remove('far');
-                        star.classList.add('fas', 'active');
-                    } else {
-                        star.classList.remove('fas', 'active');
-                        star.classList.add('far');
-                    }
-                });
-            }
-        }
-
-        // Submit review functionality
-        function submitReview() {
-            const rating = document.querySelectorAll('#userRating .fas').length;
-            const name = document.getElementById('reviewerName').value;
-            const email = document.getElementById('reviewerEmail').value;
-            const text = document.getElementById('reviewText').value;
-        
-            if (rating === 0) {
-                alert('Please select a rating');
-                return;
-            }
-        
-            if (!name.trim()) {
-                alert('Please enter your name');
-                return;
-            }
-        
-            if (!text.trim()) {
-                alert('Please write a review');
-                return;
-            }
-        
-            // ✅ Save review to Firebase with proper error handling
-            const reviewData = {
-                name: name,
-                email: email,
-                rating: rating,
-                text: text,
-                timestamp: new Date().toISOString(),
-                helpful: 0
-            };
-
-            // Show loading state
-            const submitBtn = document.querySelector('.submit-review-btn');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-            submitBtn.disabled = true;
-
-            // Save to Firebase
-            firebase.database().ref("reviews").push(reviewData)
-                .then(() => {
-                    showNotification('Review submitted successfully!', 'success');
-                    
-                    // Clear form
-                    document.getElementById('reviewerName').value = '';
-                    document.getElementById('reviewerEmail').value = '';
-                    document.getElementById('reviewText').value = '';
-                    
-                    // Reset star rating
-                    document.querySelectorAll('#userRating i').forEach(star => {
-                        star.classList.remove('fas', 'active');
-                        star.classList.add('far');
-                    });
-                    localStorage.removeItem('savedRating');
-                    
-                    // Reload reviews from Firebase
-                    loadReviewsFromFirebase();
-                })
-                .catch((error) => {
-                    console.error('Error saving review:', error);
-                    showNotification('Error submitting review. Please try again.', 'error');
-                })
-                .finally(() => {
-                    // Reset button
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                });
-        }
-
-        // Load reviews from Firebase
-        function loadReviewsFromFirebase() {
-            firebase.database().ref("reviews").once('value')
-                .then((snapshot) => {
-                    allReviews = [];
-                    
-                    snapshot.forEach((childSnapshot) => {
-                        const review = childSnapshot.val();
-                        review.id = childSnapshot.key; // Add Firebase key as ID
-                        allReviews.push(review);
-                    });
-                    
-                    // Sort by timestamp (newest first)
-                    allReviews.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                    
-                    // Update display
-                    currentPage = 1;
-                    displayReviews(currentPage);
-                    createPaginationButtons();
-                    updateRatingStatistics();
-                })
-                .catch((error) => {
-                    console.error('Error loading reviews:', error);
-                    showNotification('Error loading reviews', 'error');
-                });
-        }
-
-        // Update rating statistics
-        function updateRatingStatistics() {
-            if (allReviews.length === 0) return;
-            
-            // Calculate average rating
-            const totalRating = allReviews.reduce((sum, review) => sum + review.rating, 0);
-            const averageRating = (totalRating / allReviews.length).toFixed(1);
-            
-            // Update overall rating display
-            document.querySelector('.rating-score').textContent = averageRating;
-            document.querySelector('.rating-count').textContent = `Based on ${allReviews.length} reviews`;
-            
-            // Update rating breakdown
-            for (let i = 1; i <= 5; i++) {
-                const count = allReviews.filter(review => review.rating === i).length;
-                const percentage = allReviews.length > 0 ? (count / allReviews.length) * 100 : 0;
-                
-                const ratingBar = document.querySelector(`.rating-bar:nth-child(${6-i})`);
-                if (ratingBar) {
-                    const fill = ratingBar.querySelector('.fill');
-                    const countSpan = ratingBar.querySelector('span:last-child');
-                    
-                    if (fill) fill.style.width = `${percentage}%`;
-                    if (countSpan) countSpan.textContent = count;
-                }
-            }
-        }
-
-        function displayReviews(page) {
-            const start = (page - 1) * REVIEWS_PER_PAGE;
-            const end = start + REVIEWS_PER_PAGE;
-            const reviewsToDisplay = allReviews.slice(start, end);
-        
-            const container = document.querySelector('.reviews-list');
-            container.innerHTML = '';
-        
-            reviewsToDisplay.forEach(review => {
-                const reviewEl = createReviewElement(review);
-                container.appendChild(reviewEl);
-            });
-            
-            // Add pagination info
-            const totalReviews = allReviews.length;
-            const startIndex = (page - 1) * REVIEWS_PER_PAGE + 1;
-            const endIndex = Math.min(page * REVIEWS_PER_PAGE, totalReviews);
-            
-            // Update pagination info if element exists
-            let paginationInfo = document.querySelector('.pagination-info');
-            if (!paginationInfo) {
-                paginationInfo = document.createElement('div');
-                paginationInfo.className = 'pagination-info';
-                paginationInfo.style.cssText = 'text-align: center; margin-top: 1rem; color: #64748b; font-size: 0.9rem;';
-                container.parentNode.appendChild(paginationInfo);
-            }
-            paginationInfo.textContent = `Showing ${startIndex}-${endIndex} of ${totalReviews} reviews`;
-        }
-        
-        function createPaginationButtons() {
-            const totalPages = Math.ceil(allReviews.length / REVIEWS_PER_PAGE);
-            const paginationContainer = document.getElementById('pagination');
-            if (!paginationContainer) return;
-            
-            paginationContainer.innerHTML = '';
-            
-            if (totalPages <= 1) {
-                paginationContainer.style.display = 'none';
-                return;
-            }
-            
-            paginationContainer.style.display = 'block';
-        
-            // Previous button
-            const prevBtn = document.createElement('button');
-            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i> Previous';
-            prevBtn.disabled = currentPage === 1;
-            prevBtn.onclick = () => goToPage(currentPage - 1);
-            paginationContainer.appendChild(prevBtn);
-            
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement('button');
-                btn.textContent = i;
-                btn.classList.toggle('active', i === currentPage);
-                btn.onclick = () => goToPage(i);
-                paginationContainer.appendChild(btn);
-            }
-            
-            // Next button
-            const nextBtn = document.createElement('button');
-            nextBtn.innerHTML = 'Next <i class="fas fa-chevron-right"></i>';
-            nextBtn.disabled = currentPage === totalPages;
-            nextBtn.onclick = () => goToPage(currentPage + 1);
-            paginationContainer.appendChild(nextBtn);
-        }
-        
-        function goToPage(page) {
-            const totalPages = Math.ceil(allReviews.length / REVIEWS_PER_PAGE);
-            if (page < 1 || page > totalPages) return;
-            
-            currentPage = page;
-            displayReviews(currentPage);
-            createPaginationButtons();
-            
-            // Smooth scroll to reviews section
-            document.querySelector('.reviews-list').scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start' 
-            });
-        }
-
-        // Create review element for display
-        function createReviewElement(review) {
-            const reviewDiv = document.createElement('div');
-            reviewDiv.className = 'review-item';
-            
-            const stars = Array(5).fill(0).map((_, i) => 
-                i < review.rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>'
-            ).join('');
-
-            const timeAgo = formatTimeAgo(review.timestamp);
-
-            reviewDiv.innerHTML = `
-                <div class="review-header">
-                    <div class="reviewer-info">
-                        <div class="reviewer-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="reviewer-details">
-                            <h4>${review.name}</h4>
-                            <p>Verified Customer</p>
-                        </div>
-                    </div>
-                    <div class="review-meta">
-                        <div class="review-stars">${stars}</div>
-                        <span class="review-date">${timeAgo}</span>
-                    </div>
-                </div>
-                <div class="review-content">
-                    <p>"${review.text}"</p>
-                </div>
-                <div class="review-actions">
-                    <button class="helpful-btn" onclick="markHelpful(this, '${review.id}')">
-                        <i class="fas fa-thumbs-up"></i> Helpful (${review.helpful || 0})
-                    </button>
-                </div>
-            `;
-            
-            return reviewDiv;
-        }
-
-        // Format time ago
-        function formatTimeAgo(timestamp) {
-            const now = new Date();
-            const reviewDate = new Date(timestamp);
-            const diffInMinutes = Math.floor((now - reviewDate) / (1000 * 60));
-            
-            if (diffInMinutes < 1) return 'Just now';
-            if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
-            
-            const diffInHours = Math.floor(diffInMinutes / 60);
-            if (diffInHours < 24) return `${diffInHours} hours ago`;
-            
-            const diffInDays = Math.floor(diffInHours / 24);
-            if (diffInDays < 7) return `${diffInDays} days ago`;
-            
-            const diffInWeeks = Math.floor(diffInDays / 7);
-            if (diffInWeeks < 4) return `${diffInWeeks} weeks ago`;
-            
-            return reviewDate.toLocaleDateString();
-        }
-
-        // Mark review as helpful with Firebase update
-        function markHelpful(button, reviewId) {
-            if (button.classList.contains('active')) return;
-            
-            // Check if user already voted (using localStorage)
-            const votedReviews = JSON.parse(localStorage.getItem('votedReviews') || '[]');
-            if (votedReviews.includes(reviewId)) {
-                showNotification('You have already voted for this review', 'info');
-                return;
-            }
-            
-            // Update Firebase
-            firebase.database().ref(`reviews/${reviewId}/helpful`).transaction((currentValue) => {
-                return (currentValue || 0) + 1;
-            }).then(() => {
-                // Mark as voted locally
-                votedReviews.push(reviewId);
-                localStorage.setItem('votedReviews', JSON.stringify(votedReviews));
-                
-                // Update UI
-                button.classList.add('active');
-                const countMatch = button.textContent.match(/\d+/);
-                const currentCount = countMatch ? parseInt(countMatch[0]) : 0;
-                button.innerHTML = `<i class="fas fa-thumbs-up"></i> Helpful (${currentCount + 1})`;
-                
-                showNotification('Thank you for your feedback!', 'success');
-            }).catch((error) => {
-                console.error('Error updating helpful count:', error);
-                showNotification('Error updating vote', 'error');
-            });
-        }
-
-        function loadReviews() {
-            const reviewsContainer = document.querySelector('.reviews-list');
-            if (!reviewsContainer) return;
-        
-            // Load reviews from Firebase on page load
-            loadReviewsFromFirebase();
-        }
-
-        // Display reviews for current page
-        function displayReviews() {
-            const startIndex = (currentPage - 1) * REVIEWS_PER_PAGE;
-            const endIndex = startIndex + REVIEWS_PER_PAGE;
-            const reviewsToShow = allReviews.slice(startIndex, endIndex);
-            
-            const reviewsList = document.getElementById('reviewsList');
-            reviewsList.innerHTML = '';
-            
-            reviewsToShow.forEach(review => {
-                const reviewElement = createReviewElement(review);
-                reviewsList.appendChild(reviewElement);
-            });
-        }
-
-        // Create pagination buttons
-        function createPaginationButtons() {
-            const totalPages = Math.ceil(allReviews.length / REVIEWS_PER_PAGE);
-            const paginationButtons = document.getElementById('paginationButtons');
-            const paginationInfo = document.getElementById('paginationInfo');
-            
-            // Clear existing buttons
-            paginationButtons.innerHTML = '';
-            
-            if (totalPages <= 1) {
-                document.getElementById('paginationContainer').style.display = 'none';
-                return;
-            }
-            
-            document.getElementById('paginationContainer').style.display = 'flex';
-            
-            // Previous button
-            const prevBtn = document.createElement('button');
-            prevBtn.className = 'pagination-btn';
-            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i> Previous';
-            prevBtn.disabled = currentPage === 1;
-            prevBtn.onclick = () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    displayReviews();
-                    createPaginationButtons();
-                }
-            };
-            paginationButtons.appendChild(prevBtn);
-            
-            // Page number buttons
-            const maxVisiblePages = 5;
-            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-            
-            // Adjust start page if we're near the end
-            if (endPage - startPage < maxVisiblePages - 1) {
-                startPage = Math.max(1, endPage - maxVisiblePages + 1);
-            }
-            
-            // First page and ellipsis
-            if (startPage > 1) {
-                const firstBtn = document.createElement('button');
-                firstBtn.className = 'pagination-btn';
-                firstBtn.textContent = '1';
-                firstBtn.onclick = () => goToPage(1);
-                paginationButtons.appendChild(firstBtn);
-                
-                if (startPage > 2) {
-                    const ellipsis = document.createElement('span');
-                    ellipsis.className = 'pagination-ellipsis';
-                    ellipsis.textContent = '...';
-                    paginationButtons.appendChild(ellipsis);
-                }
-            }
-            
-            // Page number buttons
-            for (let i = startPage; i <= endPage; i++) {
-                const pageBtn = document.createElement('button');
-                pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
-                pageBtn.textContent = i;
-                pageBtn.onclick = () => goToPage(i);
-                paginationButtons.appendChild(pageBtn);
-            }
-            
-            // Last page and ellipsis
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) {
-                    const ellipsis = document.createElement('span');
-                    ellipsis.className = 'pagination-ellipsis';
-                    ellipsis.textContent = '...';
-                    paginationButtons.appendChild(ellipsis);
-                }
-                
-                const lastBtn = document.createElement('button');
-                lastBtn.className = 'pagination-btn';
-                lastBtn.textContent = totalPages;
-                lastBtn.onclick = () => goToPage(totalPages);
-                paginationButtons.appendChild(lastBtn);
-            }
-            
-            // Next button
-            const nextBtn = document.createElement('button');
-            nextBtn.className = 'pagination-btn';
-            nextBtn.innerHTML = 'Next <i class="fas fa-chevron-right"></i>';
-            nextBtn.disabled = currentPage === totalPages;
-            nextBtn.onclick = () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    displayReviews();
-                    createPaginationButtons();
-                }
-            };
-            paginationButtons.appendChild(nextBtn);
-            
-            // Update pagination info
-            const startIndex = (currentPage - 1) * REVIEWS_PER_PAGE + 1;
-            const endIndex = Math.min(currentPage * REVIEWS_PER_PAGE, allReviews.length);
-            paginationInfo.textContent = `Showing ${startIndex}-${endIndex} of ${allReviews.length} reviews`;
-        }
-
-        // Go to specific page
-        function goToPage(page) {
-            currentPage = page;
-            displayReviews();
-            createPaginationButtons();
-        }
-
-        // Mark review as helpful
-        function markHelpful(reviewId, button) {
-            if (helpfulReviews.has(reviewId)) return;
-            
-            helpfulReviews.add(reviewId);
-            
-            // Find and update the review
-            const review = allReviews.find(r => r.id === reviewId);
-            if (review) {
-                review.helpful++;
-                
-                // Update button
-                button.classList.add('active');
-                button.disabled = true;
-                button.innerHTML = `<i class="fas fa-thumbs-up"></i> Helpful (${review.helpful})`;
-                
-                showNotification('Thank you for your feedback!', 'success');
-            }
-        }
-
-        // Format time ago
-        function formatTimeAgo(timestamp) {
-            const now = new Date();
-            const date = new Date(timestamp);
-            const diffInSeconds = Math.floor((now - date) / 1000);
-            
-            if (diffInSeconds < 60) return 'Just now';
-            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
-            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
-            if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)} days ago`;
-            if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 604800)} weeks ago`;
-            
-            return date.toLocaleDateString();
-        }
-
-        // Show notification
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            
-            let bgColor = '#714b67'; // default
-            if (type === 'success') bgColor = '#48bb78';
-            if (type === 'error') bgColor = '#f56565';
-            if (type === 'info') bgColor = '#4299e1';
-            
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${bgColor};
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 8px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-                z-index: 1001;
-                animation: slideIn 0.3s ease;
-                max-width: 300px;
-                font-weight: 500;
-            `;
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'fadeOut 0.3s ease';
-                setTimeout(() => {
-                    if (document.body.contains(notification)) {
-                        document.body.removeChild(notification);
-                    }
-                }, 300);
-            }, 3000);
-        }
-
-        // Technical specs toggle functionality
-        function toggleSpecDetails(element) {
-            const details = element.querySelector('.spec-details');
-            const isActive = details.classList.contains('active');
-            
-            // Close all other spec details
-            document.querySelectorAll('.spec-details.active').forEach(detail => {
-                detail.classList.remove('active');
-            });
-            
-            // Toggle current one
-            if (!isActive) {
-                details.classList.add('active');
-            }
-        }
-
-        // Screenshot modal functionality
-        const screenshotData = {
-            'pos-interface': {
-                title: 'POS Interface Integration',
-                content: `
-                    <img src="https://i.postimg.cc/MZfXZxgd/1.png?auto=compress&cs=tinysrgb&w=800" alt="POS Interface" class="detailed-screenshot">
-                    <div class="screenshot-details">
-                        <div class="detail-item">
-                            <h5><i class="fas fa-mouse-pointer"></i> Button Placement</h5>
-                            <p>The "Enter Amount" button is strategically placed in the POS interface for easy access during checkout operations.</p>
-                        </div>
-                        <div class="detail-item">
-                            <h5><i class="fas fa-palette"></i> Visual Design</h5>
-                            <p>Consistent with Odoo's design language, using the same color scheme and typography for seamless integration.</p>
-                        </div>
-                        <div class="detail-item">
-                            <h5><i class="fas fa-mobile-alt"></i> Touch Optimization</h5>
-                            <p>Large button size optimized for touch devices and POS terminals with finger-friendly dimensions.</p>
-                        </div>
-                        <div class="detail-item">
-                            <h5><i class="fas fa-code"></i> Implementation</h5>
-                            <p>Built using OWL framework with XML templates and JavaScript event handlers for robust functionality.</p>
-                        </div>
-                    </div>
-                `
-            },
-            'amount-entry': {
-                title: 'Amount Entry Popup',
-                content: `
-                    <img src="https://i.postimg.cc/GtDpXJvZ/2.png?auto=compress&cs=tinysrgb&w=800" alt="Amount Entry Popup" class="detailed-screenshot">
-                    <div class="screenshot-details">
-                        <div class="detail-item">
-                            <h5><i class="fas fa-keyboard"></i> Input Validation</h5>
-                            <p>Real-time validation ensures only valid numeric amounts can be entered, preventing calculation errors.</p>
-                        </div>
-                        <div class="detail-item">
-                            <h5><i class="fas fa-rupee-sign"></i> Currency Display</h5>
-                            <p>Clear rupee (₹) symbol display with proper decimal formatting for Indian currency standards.</p>
-                        </div>
-                        <div class="detail-item">
-                            <h5><i class="fas fa-check-circle"></i> User Actions</h5>
-                            <p>Clear Confirm and Cancel buttons with distinct colors for easy identification and quick decision making.</p>
-                        </div>
-                        <div class="detail-item">
-                            <h5><i class="fas fa-shield-alt"></i> Error Handling</h5>
-                            <p>Comprehensive error handling with user-friendly messages for invalid inputs or system errors.</p>
-                        </div>
-                    </div>
-                `
-            },
-            'auto-calculation': {
-                title: 'Automatic Calculation',
-                content: `
-                    <img src="https://i.postimg.cc/RFyF1bJ7/3.png?auto=compress&cs=tinysrgb&w=800" alt="Auto Calculation" class="detailed-screenshot">
-                    <div class="screenshot-details">
-                        <div class="detail-item">
-                            <h5><i class="fas fa-calculator"></i> Real-time Math</h5>
-                            <p>Instant calculation of quantity based on entered amount and product price with high precision arithmetic.</p>
-                        </div>
-                        <div class="detail-item">
-                            <h5><i class="fas fa-weight"></i> Quantity Display</h5>
-                            <p>Clear display of calculated quantity with appropriate units (kg, grams, pieces) based on product type.</p>
-                        </div>
-                        <div class="detail-item">
-                            <h5><i class="fas fa-sync"></i> Order Updates</h5>
-                            <p>Automatic order line updates with immediate reflection in the POS interface and total calculations.</p>
-                        </div>
-                        <div class="detail-item">
-                            <h5><i class="fas fa-chart-line"></i> Price Accuracy</h5>
-                            <p>Maintains price accuracy with proper decimal handling and rounding according to currency standards.</p>
-                        </div>
-                    </div>
-                `
-            }
-        };
-
-        function openScreenshotModal(screenshotId) {
-            const modal = document.getElementById('screenshotModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalBody = document.getElementById('modalBody');
-            
-            const data = screenshotData[screenshotId];
-            if (data) {
-                modalTitle.textContent = data.title;
-                modalBody.innerHTML = data.content;
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('screenshotModal');
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('screenshotModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        // Add smooth scrolling for better UX
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Add scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observe all cards for animation
-        document.querySelectorAll('.feature-card, .screenshot-card, .availability-card, .company-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(card);
-        });
-
-        // Add click animations to cards
-        document.querySelectorAll('.feature-card, .screenshot-card').forEach(card => {
-            card.addEventListener('click', function() {
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 150);
-            });
-        });
-    </script>
 </body>
 </html>
